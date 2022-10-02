@@ -1,0 +1,43 @@
+upstream api {
+  server 0.0.0.0:3000;
+}
+
+server {
+  listen 6080;
+
+  allow ${ALLOW_IP};
+  deny all;
+
+  if ($http_user_agent ~* (baiduspider|360spider|googlebot|soso|bing|sogou|yahoo|yisouspider|sohu-search|yodao|YoudaoBot|robozilla|msnbot|MJ12bot|NHN|Twiceler)) {
+    return 404;
+  }
+
+  gzip on;
+  gzip_static on;
+  gzip_types text/plain application/json application/javascript application/x-javascript text/css application/xml text/javascript;
+  gzip_proxied any;
+  gzip_vary on;
+  gzip_comp_level 6;
+  gzip_buffers 16 8k;
+  gzip_http_version 1.0;
+
+  location / {
+    default_type text/html;
+    return 200 'Hello, World!';  
+  }
+ 
+  location /api {
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_pass http://api;
+  }
+
+  location /download {
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_pass http://api;
+  }
+
+}
