@@ -27,7 +27,7 @@ jobs:
 
       - name: Update dist folder to repository
         env:
-          DIST_REPO: ${{ GITHUB_REPOSITORY }}
+          DIST_REPO: ${{ env.GITHUB_REPOSITORY }}
           GITHUB_TOKEN: ${{ secrets.GIT_ACTIONS_TOKEN }}
         run: |
           git config --global user.email "Action@GitHub.com"
