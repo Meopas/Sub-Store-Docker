@@ -30,11 +30,10 @@ jobs:
 
       - name: Update dist folder to repository
         env:
-          DIST_REPO: ${{ env.GITHUB_REPOSITORY }}
           GITHUB_TOKEN: ${{ secrets.GIT_ACTIONS_TOKEN }}
         run: |
           git config --global user.email "Action@GitHub.com"
           git config --global user.name "GitHub Action"
           cd Sub-Store-Front-End/dist && git init && git add .
           git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
-          git push --force --quiet "https://$GITHUB_TOKEN@github.com/$DIST_REPO.git" dist:dist
+          git push --force --quiet "https://$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" dist:dist
