@@ -13,6 +13,12 @@ echo -e "==============================================================\n"
 echo -e "======================== 2、启动后端接口 ========================\n"
 
     cd /Sub-Store/backend
+    if [ ! -f "/Sub-Store/backend/root.json" ]; then
+        echo "{}" > /Sub-Store/backend/root.json
+    fi
+    if [ ! -f "/Sub-Store/backend/sub-store.json" ]; then
+        echo "{}" > /Sub-Store/backend/sub-store.json
+    fi
     pm2 start sub-store.min.js --name "sub-store" --source-map-support --time
 
 echo -e "==============================================================\n"
