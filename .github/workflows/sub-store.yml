@@ -1,4 +1,4 @@
-name: 构建 Sub-Store Docker 镜像
+name: 构建 Sub-Store
 
 on:
   workflow_dispatch:
@@ -46,3 +46,27 @@ jobs:
       # 打印 docker 镜像 SHA256 Hash 值
       - name: Image digest
         run: echo ${{ steps.docker_build_backend.outputs.digest }}
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+
+      - name: Install and Build
+        run: |
+          cd ..
+          git clone https://github.com/sub-store-org/Sub-Store-Front-End.git
+          cd Sub-Store-Front-End
+          npm install -g pnpm
+          pnpm install
+          pnpm run build
+          cp -r ./dist "$GITHUB_WORKSPACE/"
+
+      - name: Update dist folder to repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_ACTIONS_TOKEN }}
+        run: |
+          git config --global user.email "Action@GitHub.com"
+          git config --global user.name "GitHub Action"
+          git add .
+          git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
+          git push --force --quiet "https://$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" main:main
