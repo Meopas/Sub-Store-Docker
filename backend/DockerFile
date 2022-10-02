@@ -19,7 +19,7 @@ RUN apk add --no-cache ca-certificates \
     && cp -r /git/Docker/nginx/backend* /etc/nginx/conf.d/ \
     && cp -r /git/Docker/nginx/nginx.conf /etc/nginx/ \
     && chmod +x /git/Docker/backend/backend.sh \
-    && apk del git tzdata gettext
+    && apk del git tzdata
 
 WORKDIR /Sub-Store
 
