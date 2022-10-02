@@ -12,7 +12,7 @@ echo -e "==============================================================\n"
 
 echo -e "======================== 2、启动 Sub-Store 界面 ========================\n"
 
-    sed -i "s|https://sub.store|${DOMAIN}|g" `grep "https://sub.store" -rl /Sub-Store/frontend/dist`
+    sed -i "s|https://sub.store|${DOMAIN}|g" `grep https://sub.store -rl /Sub-Store/frontend/dist`
 
 echo -e "==============================================================\n"
 

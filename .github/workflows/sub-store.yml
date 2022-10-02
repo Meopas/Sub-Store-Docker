@@ -46,19 +46,3 @@ jobs:
       # 打印 docker 镜像 SHA256 Hash 值
       - name: Image digest
         run: echo ${{ steps.docker_build_backend.outputs.digest }}
-
-      # build 并且 push docker 镜像
-      - name: Build and push
-        id: docker_build_frontend
-        uses: docker/build-push-action@v3
-        with:
-          network: host
-          platforms: linux/amd64,linux/arm64
-          context: ./
-          file: ./frontend/DockerFile
-          push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/sub-store-frontend:latest
-
-      # 打印 docker 镜像 SHA256 Hash 值
-      - name: Image digest
-        run: echo ${{ steps.docker_build_frontend.outputs.digest }}
