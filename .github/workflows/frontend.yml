@@ -22,11 +22,13 @@ jobs:
 
       - name: Install and Build
         run: |
+          cd ..
           git clone https://github.com/sub-store-org/Sub-Store-Front-End.git
           cd Sub-Store-Front-End
           npm install -g pnpm
           pnpm install
           pnpm run build
+          cp -r ./dist "$GITHUB_WORKSPACE/"
 
       - name: Update dist folder to repository
         env:
@@ -34,6 +36,6 @@ jobs:
         run: |
           git config --global user.email "Action@GitHub.com"
           git config --global user.name "GitHub Action"
-          cd Sub-Store-Front-End/dist && git init && git add .
+          git add .
           git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
-          git push --force --quiet "https://$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" dist:dist
+          git push --force --quiet "https://$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" main:main
