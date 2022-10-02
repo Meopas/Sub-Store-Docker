@@ -3,16 +3,11 @@ FROM node:alpine
 ENV DOKCER="https://github.com/SaintWe/Sub-Store-Docker.git" \
     TZ=Asia/Shanghai
 
-RUN apk update && \
-    apk add --no-cache --virtual .build-deps \
-    ca-certificates \
-    curl \
+RUN apk add --no-cache ca-certificates \
     tzdata \
     git \
-    nodejs \
-    npm \
-    nginx\
-    gettext\
+    nginx \
+    gettext \
     && rm -fr /var/cache/apk/* \
     && npm install -g cnpm pm2 pnpm \
     && git clone https://github.com/sub-store-org/Sub-Store.git /Sub-Store \
@@ -23,7 +18,8 @@ RUN apk update && \
     && mkdir -p /etc/nginx/conf.d \
     && cp -r /git/Docker/nginx/backend* /etc/nginx/conf.d/ \
     && cp -r /git/Docker/nginx/nginx.conf /etc/nginx/ \
-    && chmod +x /git/Docker/backend/backend.sh
+    && chmod +x /git/Docker/backend/backend.sh \
+    && apk del git tzdata gettext \
 
 WORKDIR /Sub-Store
 

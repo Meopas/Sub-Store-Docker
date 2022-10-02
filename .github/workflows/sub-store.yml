@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - 'main'
+    paths-ignore:
+      - 'dist/**'
   schedule:
     - cron: "0 2 */3 * *"
 
@@ -59,6 +61,7 @@ jobs:
           npm install -g pnpm
           pnpm install
           pnpm run build
+          rm -rf "$GITHUB_WORKSPACE/dist"
           cp -r ./dist "$GITHUB_WORKSPACE/"
 
       - name: Update dist folder to repository
