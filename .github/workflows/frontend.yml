@@ -22,6 +22,8 @@ jobs:
 
       - name: Install and Build
         run: |
+          git clone https://github.com/sub-store-org/Sub-Store-Front-End.git ./frontend
+          cd frontend
           npm install -g pnpm
           pnpm install
           pnpm run build
