@@ -10,7 +10,7 @@
 
 特别感谢：[@dompling](https://github.com/dompling)
 
-> Docker-compose 部署
+## Docker-compose 部署
 
 ``` yml
 version: '3'
@@ -22,17 +22,17 @@ services:
     restart: always
     shm_size: 512mb
     ports:
-      - "6080:6080"
+      - "6080:80"
     volumes:
       - ./root.json:/Sub-Store/backend/root.json
       - ./sub-store.json:/Sub-Store/backend/sub-store.json
+      - ./crontab:/var/spool/cron/crontabs/root
     environment:
-      - ALLOW_IP=0.0.0.0/0  # 允许访问的 IP 段
       - TZ=Asia/Shanghai
 ```
 
 - 将上面内容调整后放到服务器 `docker-compose.yml` 中
-- 在 `docker-compose.yml` 同目录中执行 `echo "{}" > ./sub-store.json && echo "{}" > ./root.json`
+- 在 `docker-compose.yml` 同目录中执行 `echo "{}" > ./sub-store.json && echo "{}" > ./root.json && echo "0 */3 * * * /usr/bin/curl http://127.0.0.1/api/sync/artifacts >> /release/sync.log" > ./crontab`
 - 目录文件配置好之后在 `substore` 目录执行  
   `docker-compose up -d` 启动；  
   `docker-compose logs` 打印日志；  
@@ -43,15 +43,7 @@ services:
 
 <br>
 
-> 环境变量
-
-<li>
-ALLOW_IP：
-  允许访问的 <code style="color:red">IP地址</code> 如 <code style="color:red">ALLOW_IP=0.0.0.0/0</code> 即允许所有 IP
-</li>
-<br>
-
-### 前端
+## 前端
 
 Fork 此仓库配合 Cloudflare Pages 以及访问策略实现身份认证
 
@@ -60,7 +52,7 @@ Fork 此仓库配合 Cloudflare Pages 以及访问策略实现身份认证
 sed -i "s|https://sub.store|https://youdomain|g" `grep https://sub.store -rl $(pwd)/dist`
 ```
 
-### 结束语
+## 结束语
 
 > 感谢 [@dompling](https://github.com/dompling)
 > 感谢 [@Peng-YM](https://github.com/Peng-YM/Sub-Store) 大佬的无私奉献将代码开源
