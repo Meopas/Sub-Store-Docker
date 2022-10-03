@@ -32,7 +32,7 @@ services:
 ```
 
 - 将上面内容调整后放到服务器 `docker-compose.yml` 中
-- 在 `docker-compose.yml` 同目录中执行 `echo "{}" > ./sub-store.json && echo "{}" > ./root.json && echo "0 */6 * * * /usr/bin/curl http://127.0.0.1/api/sync/artifacts >> /release/sync.log" > ./crontab`
+- 在 `docker-compose.yml` 同目录中执行 `echo "{}" > ./sub-store.json && echo "{}" > ./root.json && echo "0 */6 * * * /usr/bin/curl http://127.0.0.1/api/sync/artifacts && /usr/bin/curl http://127.0.0.1/api/utils/refresh >> /release/sync.log" > ./crontab`
 - 目录文件配置好之后在 `substore` 目录执行  
   `docker-compose up -d` 启动；  
   `docker-compose logs` 打印日志；  
